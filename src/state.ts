@@ -13,6 +13,8 @@ export interface Time {
   readonly timestamp: number;
 }
 
+export const initTime = (): Time => ({ delta: 0, timestamp: 0 });
+
 export interface State {
   readonly particle: Particle;
   readonly playing: boolean;

@@ -5,6 +5,7 @@ import AppBar from "./AppBar";
 import Drawer from "./Drawer";
 import { Event, Resize } from "./event";
 import Particle from "./Particle";
+import PlayPause from "./PlayPause";
 import Scene from "./Scene";
 import { initialState, State } from "./state";
 
@@ -23,10 +24,11 @@ class App extends React.Component<{}, State> {
   public render = () => (
     <div>
       <AppBar />
-      <Drawer />
+      <Drawer dispatch={this.dispatch} particle={this.state.particle} />
       <Scene window={this.state.window}>
         <Particle particle={this.state.particle} />
       </Scene>
+      <PlayPause dispatch={this.dispatch} playing={this.state.playing} />
     </div>
   );
 

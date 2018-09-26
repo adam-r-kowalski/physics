@@ -1,6 +1,6 @@
 import * as tf from "@tensorflow/tfjs";
 
-import { Particle, State, Time } from "./state";
+import { initTime, Particle, State, Time } from "./state";
 
 export interface Event {
   update: (state: State) => State;
@@ -35,7 +35,9 @@ export class AnimationFrame implements Event {
   constructor(private timestamp: number, private dispatch: Dispatch) {}
 
   public update = (state: State) => {
-    const time = updateTime(state.time, this.timestamp);
+    const time = state.playing
+      ? updateTime(state.time, this.timestamp)
+      : initTime();
     const particle = updateParticle(state.particle, time.delta);
 
     if (state.playing) {
@@ -53,4 +55,18 @@ export class Resize implements Event {
     ...state,
     window: tf.tensor1d([window.innerWidth, window.innerHeight]),
   });
+}
+
+export class Play implements Event {
+  constructor(private dispatch: Dispatch) {}
+  public update = (state: State) => {
+    requestAnimationFrame(timestamp =>
+      this.dispatch(new AnimationFrame(timestamp, this.dispatch)),
+    );
+    return { ...state, playing: true };
+  };
+}
+
+export class Pause implements Event {
+  public update = (state: State) => ({ ...state, playing: false });
 }
