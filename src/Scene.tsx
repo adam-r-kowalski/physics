@@ -1,26 +1,42 @@
+import * as tf from "@tensorflow/tfjs";
 import * as React from "react";
 
-import * as context from "./context";
+import { appBarHeight } from "./AppBar";
+import { drawerWidth } from "./Drawer";
 import * as t from "./transform";
 
-export default () => (
-  <context.Consumer>
-    {({ state }) => {
-      const window = state.window.dataSync();
-      const [width, height] = window;
-      const transform = t.compose(
-        t.translate(width / 2, height / 2),
-        t.flipY,
-        t.scale(10, 10),
-      );
+const styles: { [name: string]: React.CSSProperties } = {
+  scene: {
+    backgroundColor: "lightgray",
+    marginLeft: drawerWidth,
+    marginTop: appBarHeight,
+    strokeWidth: 0,
+  },
+};
 
-      return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-          <g transform={t.toString(transform)}>
-            <circle r={1} />
-          </g>
-        </svg>
-      );
-    }}
-  </context.Consumer>
-);
+interface Props {
+  window: tf.Tensor1D;
+  children: React.ReactNode;
+}
+
+export default (props: Props) => {
+  const [width, height] = props.window.dataSync();
+  const reducedWidth = width - drawerWidth;
+  const reducedHeight = height - appBarHeight;
+
+  const transform = t.compose(
+    t.translate(reducedWidth / 2, reducedHeight / 2),
+    t.flipY,
+  );
+
+  return (
+    <svg
+      width={reducedWidth}
+      height={reducedHeight}
+      viewBox={`0 0 ${reducedWidth} ${reducedHeight}`}
+      style={styles.scene}
+    >
+      <g transform={t.toString(transform)}>{props.children}</g>
+    </svg>
+  );
+};

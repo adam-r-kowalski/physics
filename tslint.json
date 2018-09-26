@@ -8,6 +8,8 @@
     "no-implicit-dependencies": false,
     "interface-name": [true, "never-prefix"],
     "no-console": false,
-    "trailing-comma": [true, { "multiline": "always", "singleline": "never" }]
+    "trailing-comma": [true, { "multiline": "always", "singleline": "never" }],
+    "max-classes-per-file": false,
+    "variable-name": false
   }
 }

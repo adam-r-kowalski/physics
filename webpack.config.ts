@@ -38,6 +38,7 @@ const config: webpack.Configuration = {
       appMountId: "app",
       inject: false,
       lang: "en-US",
+      links: ["https://fonts.googleapis.com/css?family=Roboto:300,400,500"],
       mobile: true,
       template: require("html-webpack-template"),
       title: "Physics",

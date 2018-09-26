@@ -1,8 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import * as context from "./context";
-import { Event } from "./event";
+import AppBar from "./AppBar";
+import Drawer from "./Drawer";
+import { Event, Resize } from "./event";
+import Particle from "./Particle";
 import Scene from "./Scene";
 import { initialState, State } from "./state";
 
@@ -15,10 +17,17 @@ class App extends React.Component<{}, State> {
     this.state = initialState;
   }
 
+  public componentDidMount = () =>
+    window.addEventListener("resize", () => this.dispatch(new Resize()));
+
   public render = () => (
-    <context.Provider value={{ state: this.state, dispatch: this.dispatch }}>
-      <Scene />
-    </context.Provider>
+    <div>
+      <AppBar />
+      <Drawer />
+      <Scene window={this.state.window}>
+        <Particle particle={this.state.particle} />
+      </Scene>
+    </div>
   );
 
   private dispatch = (event: Event) => this.setState(event.update(this.state));
