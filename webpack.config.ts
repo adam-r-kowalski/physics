@@ -1,48 +1,48 @@
-import * as webpack from 'webpack';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import * as webpack from "webpack";
 
 const config: webpack.Configuration = {
-    mode: 'development',
+  mode: "development",
 
-    entry: './src/index.tsx',
+  entry: "./src/index.tsx",
 
-    output: {
-        filename: 'bundle.js',
-        path: `${__dirname}/dist`
+  output: {
+    filename: "bundle.js",
+    path: `${__dirname}/dist`,
+  },
+
+  devtool: "source-map",
+
+  devServer: {
+    open: true,
+    overlay: {
+      errors: true,
+      warnings: true,
     },
+    port: 3000,
+  },
 
-    devtool: 'source-map',
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".json"],
+  },
 
-    devServer: {
-        port: 3000,
-        open: true,
-        overlay: {
-            warnings: true,
-            errors: true
-        }
-    },
+  module: {
+    rules: [
+      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+    ],
+  },
 
-    resolve: {
-        extensions: [ '.ts', '.tsx', '.js', '.json' ]
-    },
-
-    module: {
-        rules: [
-            { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
-            { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' }
-        ]
-    },
-
-    plugins: [
-        new HtmlWebpackPlugin({
-            inject: false,
-            template: require('html-webpack-template'),
-            appMountId: 'app',
-            mobile: true,
-            lang: 'en-US',
-            title: 'Physics'
-        })
-    ]
+  plugins: [
+    new HtmlWebpackPlugin({
+      appMountId: "app",
+      inject: false,
+      lang: "en-US",
+      mobile: true,
+      template: require("html-webpack-template"),
+      title: "Physics",
+    }),
+  ],
 };
 
 export default config;
