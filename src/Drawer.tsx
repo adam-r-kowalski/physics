@@ -6,7 +6,7 @@ import { ChangeTab, Dispatch } from "./event";
 import Graphs from "./Graphs";
 import { Force, Particle, Plots, Tab } from "./state";
 
-export const drawerWidth = 325;
+export const drawerWidth = 375;
 
 const styles = () =>
   mui.createStyles({
@@ -50,7 +50,7 @@ export const Drawer = (props: Props) => (
         forces={props.forces}
       />
     ) : (
-      <Graphs data={props.plots.force} />
+      <Graphs plots={props.plots} />
     )}
   </mui.Drawer>
 );

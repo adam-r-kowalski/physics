@@ -48,7 +48,7 @@ export interface Plots {
   velocity: number[][];
 }
 
-const initPlots = (): Plots => ({
+export const initPlots = (): Plots => ({
   acceleration: [],
   force: [],
   position: [],
@@ -72,7 +72,7 @@ export const initialState: State = {
   particle: initParticle(),
   playing: false,
   plots: initPlots(),
-  tab: Tab.Graphs,
+  tab: Tab.Editor,
   time: initTime(),
   window: tf.tensor([window.innerWidth, window.innerHeight]),
 };

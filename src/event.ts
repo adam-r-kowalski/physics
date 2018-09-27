@@ -5,6 +5,7 @@ import {
   Force,
   initForce,
   initParticle,
+  initPlots,
   initTime,
   Particle,
   State,
@@ -17,6 +18,9 @@ export interface Event {
 }
 
 export type Dispatch = (event: Event) => void;
+
+const samplingFrequency = 500;
+const scaling = 1000000;
 
 const updateTime = (time: Time, timestamp: number): Time => {
   const delta = time.timestamp === 0 ? 0 : timestamp - time.timestamp;
@@ -34,7 +38,7 @@ const updateParticle = (
         !current.active ? previous : tf.add(previous, current.vector),
       tf.zeros([2]),
     ),
-    100000,
+    scaling,
   );
 
   const { mass } = particle;
@@ -77,10 +81,28 @@ export class CollectSample implements Event {
   constructor(private dispatch: Dispatch) {}
 
   public update = (state: State) => {
+    const { acceleration, force, position, velocity } = state.particle;
+
+    const [aX, aY] = tf.mul(acceleration, scaling).dataSync();
+    const [fX, fY] = tf.mul(force, scaling).dataSync();
+    const [pX, pY] = tf.mul(position, scaling).dataSync();
+    const [vX, vY] = tf.mul(velocity, scaling).dataSync();
+
+    const length = state.plots.force.length;
+
     if (state.playing) {
-      setTimeout(() => this.dispatch(new CollectSample(this.dispatch)), 100);
+      setTimeout(
+        () => this.dispatch(new CollectSample(this.dispatch)),
+        samplingFrequency,
+      );
     }
-    return produce(state, nextState => {});
+
+    return produce(state, nextState => {
+      nextState.plots.acceleration.push([aX, aY, length]);
+      nextState.plots.force.push([fX, fY, length]);
+      nextState.plots.position.push([pX, pY, length]);
+      nextState.plots.velocity.push([vX, vY, length]);
+    });
   };
 }
 
@@ -106,6 +128,11 @@ export class Play implements Event {
   public update = (state: State) => {
     requestAnimationFrame(timestamp =>
       this.dispatch(new AnimationFrame(timestamp, this.dispatch)),
+    );
+
+    setTimeout(
+      () => this.dispatch(new CollectSample(this.dispatch)),
+      samplingFrequency,
     );
 
     return !state.firstPlay
@@ -139,6 +166,7 @@ export class Restart implements Event {
       nextState.playing = false;
       nextState.forces.forEach(f => (f.active = false));
       nextState.time = initTime();
+      nextState.plots = initPlots();
     });
 }
 
