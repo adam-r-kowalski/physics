@@ -21,20 +21,24 @@ class App extends React.Component<{}, State> {
   public componentDidMount = () =>
     window.addEventListener("resize", () => this.dispatch(new Resize()));
 
-  public render = () => (
-    <div>
-      <AppBar time={this.state.time.total} />
-      <Drawer
-        dispatch={this.dispatch}
-        particle={this.state.particle}
-        forces={this.state.forces}
-      />
-      <Scene window={this.state.window}>
-        <Particle particle={this.state.particle} />
-      </Scene>
-      <PlayPause dispatch={this.dispatch} playing={this.state.playing} />
-    </div>
-  );
+  public render = () => {
+    const { time, forces, particle, tab, window, playing } = this.state;
+    return (
+      <div>
+        <AppBar time={time} />
+        <Drawer
+          dispatch={this.dispatch}
+          forces={forces}
+          particle={particle}
+          tab={tab}
+        />
+        <Scene window={window}>
+          <Particle particle={particle} />
+        </Scene>
+        <PlayPause dispatch={this.dispatch} playing={playing} />
+      </div>
+    );
+  };
 
   private dispatch = (event: Event) => this.setState(event.update(this.state));
 }

@@ -10,11 +10,15 @@ const styles = (theme: mui.Theme) =>
       margin: theme.spacing.unit,
       overflow: "visible",
     },
+    textField: {
+      width: "100%",
+    },
   });
 
 interface Props {
   classes: {
     card: string;
+    textField: string;
   };
   dispatch: Dispatch;
   particle: Particle;
@@ -31,6 +35,7 @@ const ParticleEditor = (props: Props) => (
         label="Mass"
         placeholder="Mass"
         margin="normal"
+        className={props.classes.textField}
         onChange={e =>
           props.dispatch(new ChangeParticleMass(parseFloat(e.target.value)))
         }

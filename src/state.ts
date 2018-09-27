@@ -25,9 +25,9 @@ export interface Time {
 export const initTime = (): Time => ({ delta: 0, timestamp: 0, total: 0 });
 
 export interface Force {
-  active: boolean;
-  duration: number;
-  vector: tf.Tensor1D;
+  readonly active: boolean;
+  readonly duration: number;
+  readonly vector: tf.Tensor1D;
 }
 
 export const initForce = (): Force => ({
@@ -36,11 +36,17 @@ export const initForce = (): Force => ({
   vector: tf.zeros([2]),
 });
 
+export enum Tab {
+  Editor,
+  Graphs,
+}
+
 export interface State {
   readonly firstPlay: boolean;
   readonly forces: Force[];
   readonly particle: Particle;
   readonly playing: boolean;
+  readonly tab: Tab;
   readonly time: Time;
   readonly window: tf.Tensor1D;
 }
@@ -50,6 +56,7 @@ export const initialState: State = {
   forces: [initForce()],
   particle: initParticle(),
   playing: false,
+  tab: Tab.Editor,
   time: initTime(),
   window: tf.tensor([window.innerWidth, window.innerHeight]),
 };

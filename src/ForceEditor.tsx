@@ -24,6 +24,9 @@ const styles = (theme: mui.Theme) =>
     insertButton: {
       margin: theme.spacing.unit,
     },
+    textField: {
+      width: "100%",
+    },
   });
 
 interface Props {
@@ -31,6 +34,7 @@ interface Props {
     active: string;
     insertButton: string;
     card: string;
+    textField: string;
   };
   dispatch: Dispatch;
   forces: Force[];
@@ -56,6 +60,7 @@ const ForceEditor = (props: Props) => (
               label="Duration"
               placeholder="Duration"
               margin="normal"
+              className={props.classes.textField}
               onChange={e =>
                 props.dispatch(
                   new ChangeForceDuration(parseFloat(e.target.value), index),
@@ -69,6 +74,7 @@ const ForceEditor = (props: Props) => (
               label="X Component"
               placeholder="X Component"
               margin="normal"
+              className={props.classes.textField}
               onChange={e =>
                 props.dispatch(
                   new ChangeForceXComponent(parseFloat(e.target.value), index),
@@ -82,6 +88,7 @@ const ForceEditor = (props: Props) => (
               label="Y Component"
               placeholder="Y Component"
               margin="normal"
+              className={props.classes.textField}
               onChange={e =>
                 props.dispatch(
                   new ChangeForceYComponent(parseFloat(e.target.value), index),

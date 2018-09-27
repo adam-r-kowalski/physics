@@ -8,6 +8,7 @@ import {
   initTime,
   Particle,
   State,
+  Tab,
   Time,
 } from "./state";
 
@@ -184,4 +185,10 @@ export class InsertForce implements Event {
     produce(state, nextState => {
       nextState.forces.push(initForce());
     });
+}
+
+export class ChangeTab implements Event {
+  constructor(private tab: Tab) {}
+
+  public update = (state: State) => ({ ...state, tab: this.tab });
 }

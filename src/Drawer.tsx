@@ -1,12 +1,11 @@
 import * as mui from "@material-ui/core";
 import * as React from "react";
 
-import { Dispatch } from "./event";
-import ForceEditor from "./ForceEditor";
-import ParticleEditor from "./ParticleEditor";
-import { Force, Particle } from "./state";
+import Editor from "./Editor";
+import { ChangeTab, Dispatch } from "./event";
+import { Force, Particle, Tab } from "./state";
 
-export const drawerWidth = 240;
+export const drawerWidth = 325;
 
 const styles = () =>
   mui.createStyles({
@@ -22,6 +21,7 @@ interface Props {
   dispatch: Dispatch;
   particle: Particle;
   forces: Force[];
+  tab: Tab;
 }
 
 export const Drawer = (props: Props) => (
@@ -30,8 +30,26 @@ export const Drawer = (props: Props) => (
     anchor="left"
     classes={{ paper: props.classes.drawerPaper }}
   >
-    <ParticleEditor dispatch={props.dispatch} particle={props.particle} />
-    <ForceEditor dispatch={props.dispatch} forces={props.forces} />
+    <mui.Tabs value={props.tab === Tab.Editor ? 0 : 1}>
+      <mui.Tab
+        label="Editor"
+        onClick={() => props.dispatch(new ChangeTab(Tab.Editor))}
+      />
+      <mui.Tab
+        label="Graphs"
+        onClick={() => props.dispatch(new ChangeTab(Tab.Graphs))}
+      />
+    </mui.Tabs>
+
+    {props.tab === Tab.Editor ? (
+      <Editor
+        dispatch={props.dispatch}
+        particle={props.particle}
+        forces={props.forces}
+      />
+    ) : (
+      <></>
+    )}
   </mui.Drawer>
 );
 
