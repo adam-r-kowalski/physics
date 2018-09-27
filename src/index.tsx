@@ -22,7 +22,7 @@ class App extends React.Component<{}, State> {
     window.addEventListener("resize", () => this.dispatch(new Resize()));
 
   public render = () => {
-    const { time, forces, particle, tab, window, playing } = this.state;
+    const { time, forces, particle, plots, tab, window, playing } = this.state;
     return (
       <div>
         <AppBar time={time} />
@@ -31,6 +31,7 @@ class App extends React.Component<{}, State> {
           forces={forces}
           particle={particle}
           tab={tab}
+          plots={plots}
         />
         <Scene window={window}>
           <Particle particle={particle} />

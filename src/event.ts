@@ -73,6 +73,17 @@ export class AnimationFrame implements Event {
   };
 }
 
+export class CollectSample implements Event {
+  constructor(private dispatch: Dispatch) {}
+
+  public update = (state: State) => {
+    if (state.playing) {
+      setTimeout(() => this.dispatch(new CollectSample(this.dispatch)), 100);
+    }
+    return produce(state, nextState => {});
+  };
+}
+
 export class Resize implements Event {
   public update = (state: State) => ({
     ...state,

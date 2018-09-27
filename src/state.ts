@@ -41,11 +41,26 @@ export enum Tab {
   Graphs,
 }
 
+export interface Plots {
+  acceleration: number[][];
+  force: number[][];
+  position: number[][];
+  velocity: number[][];
+}
+
+const initPlots = (): Plots => ({
+  acceleration: [],
+  force: [],
+  position: [],
+  velocity: [],
+});
+
 export interface State {
   readonly firstPlay: boolean;
   readonly forces: Force[];
   readonly particle: Particle;
   readonly playing: boolean;
+  readonly plots: Plots;
   readonly tab: Tab;
   readonly time: Time;
   readonly window: tf.Tensor1D;
@@ -56,7 +71,8 @@ export const initialState: State = {
   forces: [initForce()],
   particle: initParticle(),
   playing: false,
-  tab: Tab.Editor,
+  plots: initPlots(),
+  tab: Tab.Graphs,
   time: initTime(),
   window: tf.tensor([window.innerWidth, window.innerHeight]),
 };

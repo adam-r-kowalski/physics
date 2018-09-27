@@ -3,7 +3,8 @@ import * as React from "react";
 
 import Editor from "./Editor";
 import { ChangeTab, Dispatch } from "./event";
-import { Force, Particle, Tab } from "./state";
+import Graphs from "./Graphs";
+import { Force, Particle, Plots, Tab } from "./state";
 
 export const drawerWidth = 325;
 
@@ -20,6 +21,7 @@ interface Props {
   };
   dispatch: Dispatch;
   particle: Particle;
+  plots: Plots;
   forces: Force[];
   tab: Tab;
 }
@@ -48,7 +50,7 @@ export const Drawer = (props: Props) => (
         forces={props.forces}
       />
     ) : (
-      <></>
+      <Graphs data={props.plots.force} />
     )}
   </mui.Drawer>
 );
