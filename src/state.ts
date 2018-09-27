@@ -8,14 +8,37 @@ export interface Particle {
   readonly velocity: tf.Tensor1D;
 }
 
+export const initParticle = (): Particle => ({
+  acceleration: tf.zeros([2]),
+  force: tf.zeros([2]),
+  mass: 1,
+  position: tf.zeros([2]),
+  velocity: tf.zeros([2]),
+});
+
 export interface Time {
   readonly delta: number;
   readonly timestamp: number;
+  readonly total: number;
 }
 
-export const initTime = (): Time => ({ delta: 0, timestamp: 0 });
+export const initTime = (): Time => ({ delta: 0, timestamp: 0, total: 0 });
+
+export interface Force {
+  active: boolean;
+  duration: number;
+  vector: tf.Tensor1D;
+}
+
+export const initForce = (): Force => ({
+  active: false,
+  duration: 0,
+  vector: tf.zeros([2]),
+});
 
 export interface State {
+  readonly firstPlay: boolean;
+  readonly forces: Force[];
   readonly particle: Particle;
   readonly playing: boolean;
   readonly time: Time;
@@ -23,17 +46,10 @@ export interface State {
 }
 
 export const initialState: State = {
-  particle: {
-    acceleration: tf.zeros([2]),
-    force: tf.tensor([0.00001, 0]),
-    mass: 1,
-    position: tf.zeros([2]),
-    velocity: tf.zeros([2]),
-  },
+  firstPlay: true,
+  forces: [initForce()],
+  particle: initParticle(),
   playing: false,
-  time: {
-    delta: 0,
-    timestamp: 0,
-  },
+  time: initTime(),
   window: tf.tensor([window.innerWidth, window.innerHeight]),
 };

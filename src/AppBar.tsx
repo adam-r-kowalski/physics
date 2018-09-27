@@ -18,13 +18,14 @@ interface Props {
   classes: {
     appBar: string;
   };
+  time: number;
 }
 
 const AppBar = (props: Props) => (
   <mui.AppBar position="absolute" className={props.classes.appBar}>
     <mui.Toolbar>
       <mui.Typography variant="title" color="inherit">
-        Physics
+        Physics {(props.time / 1000).toFixed(2)} seconds
       </mui.Typography>
     </mui.Toolbar>
   </mui.AppBar>

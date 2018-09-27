@@ -23,8 +23,12 @@ class App extends React.Component<{}, State> {
 
   public render = () => (
     <div>
-      <AppBar />
-      <Drawer dispatch={this.dispatch} particle={this.state.particle} />
+      <AppBar time={this.state.time.total} />
+      <Drawer
+        dispatch={this.dispatch}
+        particle={this.state.particle}
+        forces={this.state.forces}
+      />
       <Scene window={this.state.window}>
         <Particle particle={this.state.particle} />
       </Scene>

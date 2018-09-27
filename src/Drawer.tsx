@@ -2,15 +2,14 @@ import * as mui from "@material-ui/core";
 import * as React from "react";
 
 import { Dispatch } from "./event";
-import { Particle } from "./state";
+import ForceEditor from "./ForceEditor";
+import ParticleEditor from "./ParticleEditor";
+import { Force, Particle } from "./state";
 
 export const drawerWidth = 240;
 
 const styles = () =>
   mui.createStyles({
-    card: {
-      margin: 5,
-    },
     drawerPaper: {
       width: drawerWidth,
     },
@@ -18,11 +17,11 @@ const styles = () =>
 
 interface Props {
   classes: {
-    card: string;
     drawerPaper: string;
   };
   dispatch: Dispatch;
   particle: Particle;
+  forces: Force[];
 }
 
 export const Drawer = (props: Props) => (
@@ -31,19 +30,8 @@ export const Drawer = (props: Props) => (
     anchor="left"
     classes={{ paper: props.classes.drawerPaper }}
   >
-    <mui.Card className={props.classes.card}>
-      <mui.CardContent>
-        <mui.Typography>Particle</mui.Typography>
-
-        <mui.TextField
-          value={props.particle.mass}
-          type="number"
-          label="Mass"
-          placeholder="Mass"
-          margin="normal"
-        />
-      </mui.CardContent>
-    </mui.Card>
+    <ParticleEditor dispatch={props.dispatch} particle={props.particle} />
+    <ForceEditor dispatch={props.dispatch} forces={props.forces} />
   </mui.Drawer>
 );
 
